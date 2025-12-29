@@ -1,0 +1,24 @@
+{
+  "name": "wt",
+  "version": "1.0.0",
+  "description": "Personal CLI to to manage git worktree and tmux sessions",
+  "type": "module",
+  "bin": {
+    "wt": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc && cp -r templates/. dist/templates",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "inquirer": "^13.1.0",
+    "zx": "^8.8.5"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.0",
+    "@types/node": "^25.0.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

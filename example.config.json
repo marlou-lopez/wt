@@ -1,0 +1,17 @@
+{
+  "directories_roots": {
+    "repositories": "/Users/example/repositories",
+    "worktrees": "/Users/example/worktrees",
+    "notes": "/Users/example/notes"
+  },
+  "repos": {
+    "frontend": {
+      "path": "frontend",
+      "manager": "npm"
+    },
+    "backend": {
+      "path": "backend",
+      "manager": "yarn"
+    }
+  }
+}
