@@ -1,4 +1,3 @@
-
 export interface RepoConfig {
   path: string;
   manager: 'npm' | 'yarn' | 'pnpm';
@@ -13,7 +12,7 @@ export interface Config {
   repos: Record<string, RepoConfig>;
 }
 
-type TicketStatus = 'done' | 'in_progress' | 'blocked' | 'todo' | 'unknown'
+type TicketStatus = 'done' | 'in_progress' | 'blocked' | 'todo' | 'unknown';
 
 export interface Ticket {
   id: string;
@@ -21,7 +20,7 @@ export interface Ticket {
   status: TicketStatus;
   filePath: string;
   updatedAt: Date;
-  frontmatter: any;
+  frontmatter: Record<string, unknown>;
   content: string;
   closed_at?: Date;
 }

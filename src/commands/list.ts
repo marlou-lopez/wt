@@ -5,7 +5,7 @@ import { getSessionName } from '../services/tmux.js';
 
 export async function list() {
   const config = await loadConfig();
-  
+
   const tickets = await getTickets(config);
 
   if (tickets.length === 0) {
@@ -13,16 +13,16 @@ export async function list() {
     process.exit(0);
   }
 
-  const choices = tickets.map(ticket => {
-      let icon = '⚪'; 
-      if (ticket.status === 'in_progress') icon = '🚧';
-      if (ticket.status === 'blocked') icon = '🛑';
-      if (ticket.status === 'todo') icon = '🔵';
+  const choices = tickets.map((ticket) => {
+    let icon = '⚪';
+    if (ticket.status === 'in_progress') icon = '🚧';
+    if (ticket.status === 'blocked') icon = '🛑';
+    if (ticket.status === 'todo') icon = '🔵';
 
-      return {
-          name: `${icon} ${ticket.id} : ${ticket.title}`,
-          value: ticket.id
-      };
+    return {
+      name: `${icon} ${ticket.id} : ${ticket.title}`,
+      value: ticket.id,
+    };
   });
 
   const ticketId = await select({
@@ -31,20 +31,20 @@ export async function list() {
   });
 
   try {
-      await $`tmux has-session -t ${getSessionName(ticketId)}`;
+    await $`tmux has-session -t ${getSessionName(ticketId)}`;
   } catch {
-      console.log(chalk.red(`Session '${ticketId}' is not running.`));
-      process.exit(0);
+    console.log(chalk.red(`Session '${ticketId}' is not running.`));
+    process.exit(0);
   }
 
   // If session exists, switch to it
   console.log(chalk.green(`Switching to ${ticketId}...`));
-  
+
   if (process.env.TMUX) {
-      // If we are already inside tmux, switch client
-      await $`tmux switch-client -t ${getSessionName(ticketId)}:0`;
+    // If we are already inside tmux, switch client
+    await $`tmux switch-client -t ${getSessionName(ticketId)}:0`;
   } else {
-      // If we are in normal terminal, attach
-      await $`tmux attach -t ${getSessionName(ticketId)}:0`;
+    // If we are in normal terminal, attach
+    await $`tmux attach -t ${getSessionName(ticketId)}:0`;
   }
 }

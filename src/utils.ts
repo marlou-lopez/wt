@@ -1,7 +1,7 @@
-import { chalk, fs, os, path, $ } from "zx";
+import { chalk, fs, os, path, $ } from 'zx';
 import matter from 'gray-matter';
-import { Config, Ticket } from "./types.js";
-import { fileURLToPath } from "node:url";
+import { Config, Ticket } from './types.js';
+import { fileURLToPath } from 'node:url';
 
 export const CONFIG_PATH = path.join(os.homedir(), '.config/wt/config.json');
 
@@ -19,8 +19,8 @@ const __dirname = path.dirname(__filename);
 
 export async function readTemplate(filename: string): Promise<string> {
   const locations = [
-    path.resolve(__dirname, '../templates', filename), 
-    path.resolve(__dirname, 'templates', filename)
+    path.resolve(__dirname, '../templates', filename),
+    path.resolve(__dirname, 'templates', filename),
   ];
 
   for (const loc of locations) {
@@ -57,7 +57,7 @@ export async function getTickets(config: Config): Promise<Ticket[]> {
         filePath,
         updatedAt: mtime,
         frontmatter: data,
-        content: parsed.content
+        content: parsed.content,
       });
     }
   }
@@ -71,8 +71,8 @@ export function sanitizeTicketId(id: string): string {
   return id
     .trim()
     .replace(/[^a-zA-Z0-9-_]/g, '-') // Replace special chars with hyphen
-    .replace(/-+/g, '-')             // Collapse multiple hyphens
-    .replace(/^-|-$/g, '')           // Remove leading/trailing hyphens
+    .replace(/-+/g, '-') // Collapse multiple hyphens
+    .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
     .toUpperCase();
 }
 
