@@ -13,13 +13,13 @@ export async function start() {
     required: true,
   });
 
-  ticketId = sanitizeTicketId(ticketId)
+  ticketId = sanitizeTicketId(ticketId);
   console.log(chalk.gray(`Using sanitized Ticket ID: ${ticketId}`));
 
   const selectedRepos = await checkbox<string>({
-      message: 'Which repositories does this involve?',
-      choices: Object.keys(config.repos),
-    });
+    message: 'Which repositories does this involve?',
+    choices: Object.keys(config.repos),
+  });
 
   if (selectedRepos.length === 0) {
     console.log(chalk.yellow('No repos selected. Just creating notes/session.'));
@@ -34,7 +34,7 @@ export async function start() {
 
   const sessionCreated = await Tmux.ensureSession(sessionName);
   if (sessionCreated) {
-    console.log(chalk.green("Session created: ", sessionName))
+    console.log(chalk.green('Session created: ', sessionName));
     const noteFile = path.join(config.directory_roots.notes, ticketId + '.md');
     await Tmux.sendKeys(`${sessionName}:0`, `nvim ${noteFile}`);
   }
@@ -54,7 +54,7 @@ export async function start() {
 
     const setupScriptPath = path.join(worktreePath, '.dev-init.sh');
     let scriptContent = await readTemplate('init.sh');
-    
+
     const installCmd = repoConfig.manager === 'yarn' ? 'yarn install' : 'npm ci';
 
     scriptContent = scriptContent
@@ -64,11 +64,9 @@ export async function start() {
     await fs.outputFile(setupScriptPath, scriptContent, { mode: 0o755 });
 
     await Tmux.createWindow(sessionName, repoName, worktreePath);
-    
-    await Tmux.sendKeys(`${sessionName}:${repoName}`, setupScriptPath);
 
+    await Tmux.sendKeys(`${sessionName}:${repoName}`, setupScriptPath);
   }
 
-  console.log(chalk.green("\n✅ Setup complete!"));
+  console.log(chalk.green('\n✅ Setup complete!'));
 }
-

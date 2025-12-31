@@ -31,6 +31,7 @@ npm link
 ## Configuration
 
 Create a config file at `~/.config/dev-flow/config.json`
+
 - Directories: Where your repos live and where new worktrees should go.
 - Templates: Paths to your custom shell script and markdown note template.
 - Repos: The list of repositories to checkout for each ticket.
@@ -52,27 +53,28 @@ Create a config file at `~/.config/dev-flow/config.json`
 ## Usage
 
 1. Start a ticket
-Sets up worktrees, runs your init script, and opens your notes.
+   Sets up worktrees, runs your init script, and opens your notes.
 
 ```bash
 wt start
 ```
 
 2. View active tickets
-List down tickets that are not done and hot-swap your Tmux session to that context.
+   List down tickets that are not done and hot-swap your Tmux session to that context.
 
 ```bash
 wt list
 ```
 
 3. Finish & Archive
-Tears down the Tmux session, removes the worktrees, deletes the local branch, and marks the note as done.
+   Tears down the Tmux session, removes the worktrees, deletes the local branch, and marks the note as done.
 
 ```bash
 wts finish
 ```
 
 ## Todo
+
 - [ ] Custom note template
 - [ ] Custom init script
 - [ ] Work with VSCode Multiroot Workspace

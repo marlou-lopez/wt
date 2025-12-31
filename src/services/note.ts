@@ -4,7 +4,7 @@ import { readTemplate } from '../utils.js';
 
 export async function createNote(config: Config, ticketId: string): Promise<string | null> {
   const notePath = path.join(config.directory_roots.notes, `${ticketId}.md`);
-  
+
   if (fs.existsSync(notePath)) return null;
 
   let noteContent = await readTemplate('note.md');

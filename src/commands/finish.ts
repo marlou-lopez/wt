@@ -1,7 +1,7 @@
 import { fs, path, chalk } from 'zx';
 import matter from 'gray-matter';
 import { select, confirm } from '@inquirer/prompts';
-import { loadConfig, getTickets } from '../utils.js'
+import { loadConfig, getTickets } from '../utils.js';
 import * as Tmux from '../services/tmux.js';
 import * as Git from '../services/git.js';
 import { Ticket } from '../types.js';
@@ -20,16 +20,16 @@ export async function finish() {
     message: 'Select a ticket to FINISH (Archive & Cleanup):',
     choices: tickets.map((ticket) => ({
       name: `${ticket.id} - ${ticket.status}`,
-      value: ticket.id
-    }))
+      value: ticket.id,
+    })),
   });
 
   const selectedTicket = tickets.find((ticket) => ticket.id === ticketId);
-  if (!selectedTicket) return; 
+  if (!selectedTicket) return;
 
   const userConfirmation = await confirm({
     message: `Are you sure you want to close ${ticketId}? (This will kill the tmux session and remove worktrees)`,
-    default: false
+    default: false,
   });
 
   if (!userConfirmation) process.exit(0);
@@ -40,41 +40,44 @@ export async function finish() {
   // We loop through ALL repos defined in config to check if a worktree exists for this ticket
   for (const [repoName, repoConfig] of Object.entries(config.repos)) {
     const baseRepo = path.join(config.directory_roots.repositories, repoConfig.path);
-    const worktreePath = path.join(config.directory_roots.worktrees, repoConfig.path, ticketId.toString());
-    
+    const worktreePath = path.join(
+      config.directory_roots.worktrees,
+      repoConfig.path,
+      ticketId.toString()
+    );
+
     if (fs.existsSync(worktreePath)) {
       console.log(chalk.blue(`\nCleaning up ${repoName}...`));
-      
+
       await Git.removeWorktree(baseRepo, worktreePath);
       console.log(chalk.green(`✔ Removed worktree`));
 
       const deleteBranchConfirmation = await confirm({
         message: `Delete local branch '${ticketId}' in ${repoName}?`,
-        default: true
+        default: true,
       });
 
       if (deleteBranchConfirmation) {
         try {
-            await Git.deleteBranch(baseRepo, ticketId);
-            console.log(chalk.green(`✔ Deleted branch ${ticketId}`));
-        } catch (e) {
-            console.log(chalk.red(`Failed to delete branch (maybe it doesn't exist)`));
+          await Git.deleteBranch(baseRepo, ticketId);
+          console.log(chalk.green(`✔ Deleted branch ${ticketId}`));
+        } catch {
+          console.log(chalk.red(`Failed to delete branch (maybe it doesn't exist)`));
         }
       }
     }
   }
 
   console.log(chalk.blue(`\n📝 Archiving note...`));
-  
-  const newFrontmatter: Ticket = {
-      ...selectedTicket.frontmatter,
-      status: 'done',
-      closed_at: new Date().toISOString()
+
+  const newFrontmatter: Partial<Ticket> = {
+    ...selectedTicket.frontmatter,
+    status: 'done',
+    closed_at: new Date(),
   };
-  
+
   const newContent = matter.stringify(selectedTicket.content, newFrontmatter);
   await fs.writeFile(selectedTicket.filePath, newContent);
-  
-  console.log(chalk.green(`✔ Ticket ${ticketId} marked as Done!`));
 
+  console.log(chalk.green(`✔ Ticket ${ticketId} marked as Done!`));
 }

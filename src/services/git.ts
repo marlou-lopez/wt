@@ -1,17 +1,15 @@
 import { fs, path, $, chalk } from 'zx';
-import { Config } from '../types.js';
 
 export async function createWorktree(
   baseRepoPath: string,
   worktreePath: string,
-  repoName: string, 
+  repoName: string,
   ticketId: string
 ): Promise<string | null> {
-  
   await fs.ensureDir(path.dirname(worktreePath));
-  
+
   if (fs.existsSync(worktreePath)) {
-    return null; 
+    return null;
   }
 
   try {
@@ -28,12 +26,12 @@ export async function removeWorktree(baseRepoPath: string, worktreePath: string)
 
   try {
     await $`git -C ${baseRepoPath} worktree remove ${worktreePath}`;
-  } catch (e) {
+  } catch {
     console.log(chalk.yellow(`⚠ standard remove failed. Force removing...`));
     await $`git -C ${baseRepoPath} worktree remove -f ${worktreePath}`;
     console.log(chalk.green(`✔ Force removed worktree`));
   }
-  
+
   await fs.remove(worktreePath);
 }
 
@@ -50,7 +48,7 @@ export async function deleteBranch(baseRepoPath: string, branchName: string) {
   try {
     await $`git -C ${baseRepoPath} branch -D ${branchName}`;
   } catch (e) {
-    console.error(chalk.red(`Failed to delete branch: ${branchName}`))
+    console.error(chalk.red(`Failed to delete branch: ${branchName}`));
     throw e;
   }
 }

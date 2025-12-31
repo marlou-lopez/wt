@@ -28,6 +28,7 @@ try {
       console.log(chalk.bold('wt CLI'));
       console.log('Usage: wt [start | list | finish | doctor]');
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } catch (error: any) {
   if (error.name === 'ExitPromptError' || error.message?.includes('User force closed')) {
     console.log(chalk.yellow('\n\n🚫 Operation cancelled by user.'));
@@ -42,4 +43,3 @@ process.on('SIGINT', () => {
   console.log(chalk.yellow('\n\n🚫 Operation cancelled by user. Exiting...'));
   process.exit(0);
 });
-

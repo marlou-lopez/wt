@@ -8,9 +8,15 @@
   },
   "scripts": {
     "build": "tsc && cp -r templates/. dist/templates",
+    "test": "vitest",
+    "format": "prettier --write .",
+    "check-format": "prettier --check .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@types/fs-extra": "^11.0.4",
     "gray-matter": "^4.0.3",
     "inquirer": "^13.1.0",
     "zx": "^8.8.5"
@@ -18,7 +24,13 @@
   "devDependencies": {
     "@types/inquirer": "^9.0.0",
     "@types/node": "^25.0.3",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.51.0",
+    "vitest": "^4.0.16"
   }
 }
