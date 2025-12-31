@@ -2,6 +2,7 @@ import { chalk, fs, os, path, $ } from 'zx';
 import matter from 'gray-matter';
 import { Config, Ticket } from './types.js';
 import { fileURLToPath } from 'node:url';
+import { log, tasks } from '@clack/prompts';
 
 export const CONFIG_PATH = path.join(os.homedir(), '.config/wt/config.json');
 
@@ -89,8 +90,8 @@ export async function checkDependencies() {
   }
 
   if (missing.length > 0) {
-    console.error(chalk.red(`\n❌ Missing required dependencies: ${missing.join(', ')}`));
-    console.error(chalk.yellow(`Please install them before using dev-flow.`));
+    log.error(chalk.red(`Missing required dependencies: ${missing.join(', ')}`));
+    log.warn(chalk.yellow(`Please install them before using wt.`));
     process.exit(1);
   }
 }
