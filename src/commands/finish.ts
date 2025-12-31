@@ -70,10 +70,10 @@ export async function finish() {
 
   console.log(chalk.blue(`\n📝 Archiving note...`));
 
-  const newFrontmatter: Ticket = {
+  const newFrontmatter: Partial<Ticket> = {
     ...selectedTicket.frontmatter,
     status: 'done',
-    closed_at: new Date().toISOString(),
+    closed_at: new Date()
   };
 
   const newContent = matter.stringify(selectedTicket.content, newFrontmatter);

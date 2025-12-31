@@ -1,8 +1,8 @@
 ---
-id: { { TICKET_ID } }
+id: {{TICKET_ID}}
 type: ticket
 status: in_progress
-created: { { DATE } }
+created: {{DATE}}
 ---
 
 # {{TICKET_ID}}
