@@ -73,7 +73,7 @@ export async function finish() {
   const newFrontmatter: Partial<Ticket> = {
     ...selectedTicket.frontmatter,
     status: 'done',
-    closed_at: new Date()
+    closed_at: new Date(),
   };
 
   const newContent = matter.stringify(selectedTicket.content, newFrontmatter);
