@@ -47,7 +47,7 @@ describe('createNote (integration)', () => {
     const result = await createNote(mockConfig, ticketId);
 
     expect(result).toBe(expectedPath);
-    
+
     expect(fs.existsSync(expectedPath)).toBe(true);
 
     const content = await fs.readFile(expectedPath, 'utf-8');
@@ -58,13 +58,13 @@ describe('createNote (integration)', () => {
   it('should return null and not overwrite if note already exists', async () => {
     const ticketId = 'EXISTING-TICKET';
     const existingPath = path.join(notesDir, 'EXISTING-TICKET.md');
-    
+
     await fs.writeFile(existingPath, 'Original Content');
 
     const result = await createNote(mockConfig, ticketId);
 
     expect(result).toBeNull();
-    
+
     const content = await fs.readFile(existingPath, 'utf-8');
     expect(content).toBe('Original Content');
   });
