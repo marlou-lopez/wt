@@ -40,8 +40,3 @@ try {
   }
   process.exit(1);
 }
-
-process.on('SIGINT', () => {
-  // console.log(chalk.yellow('\n\n🚫 Operation cancelled by user. Exiting...'));
-  process.exit(0);
-});

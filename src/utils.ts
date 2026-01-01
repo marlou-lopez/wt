@@ -8,7 +8,7 @@ export const CONFIG_PATH = path.join(os.homedir(), '.config/wt/config.json');
 
 export async function loadConfig(): Promise<Config> {
   if (!fs.existsSync(CONFIG_PATH)) {
-    console.error(chalk.red(`Error: Config file not found at ${CONFIG_PATH}`));
+    log.error(chalk.red(`Error: Config file not found at ${CONFIG_PATH}`));
     process.exit(1);
   }
   return fs.readJson(CONFIG_PATH);

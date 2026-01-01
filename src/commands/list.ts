@@ -1,5 +1,5 @@
 import { chalk, $ } from 'zx';
-import { select } from '@inquirer/prompts';
+import { cancel, isCancel, log, select } from '@clack/prompts'
 import { loadConfig, getTickets } from '../utils.js';
 import { getSessionName } from '../services/tmux.js';
 
@@ -9,7 +9,7 @@ export async function list() {
   const tickets = await getTickets(config);
 
   if (tickets.length === 0) {
-    console.log(chalk.yellow('No active tickets found.'));
+    log.warn(chalk.yellow('No active tickets found.'));
     process.exit(0);
   }
 
@@ -20,25 +20,30 @@ export async function list() {
     if (ticket.status === 'todo') icon = '🔵';
 
     return {
-      name: `${icon} ${ticket.id} : ${ticket.title}`,
+      label: `${icon} ${ticket.id}`,
       value: ticket.id,
     };
   });
 
   const ticketId = await select({
-    choices,
     message: 'Select a ticket to resume:',
+    options: choices
   });
+
+  if (isCancel(ticketId)) {
+    cancel('Operation cancelled.')
+    process.exit(0)
+  }
 
   try {
     await $`tmux has-session -t ${getSessionName(ticketId)}`;
   } catch {
-    console.log(chalk.red(`Session '${ticketId}' is not running.`));
+    log.error(chalk.red(`Session '${ticketId}' is not running.`));
     process.exit(0);
   }
 
   // If session exists, switch to it
-  console.log(chalk.green(`Switching to ${ticketId}...`));
+  log.message(chalk.green(`Switching to ${ticketId}...`));
 
   if (process.env.TMUX) {
     // If we are already inside tmux, switch client
