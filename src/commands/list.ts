@@ -1,5 +1,5 @@
 import { chalk, $ } from 'zx';
-import { cancel, isCancel, log, select } from '@clack/prompts'
+import { cancel, isCancel, log, select } from '@clack/prompts';
 import { loadConfig, getTickets } from '../utils.js';
 import { getSessionName } from '../services/tmux.js';
 
@@ -27,12 +27,12 @@ export async function list() {
 
   const ticketId = await select({
     message: 'Select a ticket to resume:',
-    options: choices
+    options: choices,
   });
 
   if (isCancel(ticketId)) {
-    cancel('Operation cancelled.')
-    process.exit(0)
+    cancel('Operation cancelled.');
+    process.exit(0);
   }
 
   try {
@@ -43,7 +43,7 @@ export async function list() {
   }
 
   // If session exists, switch to it
-  log.message(chalk.green(`Switching to ${ticketId}...`));
+  log.success(chalk.green(`Switching to ${ticketId}...`));
 
   if (process.env.TMUX) {
     // If we are already inside tmux, switch client

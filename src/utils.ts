@@ -2,7 +2,7 @@ import { chalk, fs, os, path, $ } from 'zx';
 import matter from 'gray-matter';
 import { Config, Ticket } from './types.js';
 import { fileURLToPath } from 'node:url';
-import { log, tasks } from '@clack/prompts';
+import { log } from '@clack/prompts';
 
 export const CONFIG_PATH = path.join(os.homedir(), '.config/wt/config.json');
 

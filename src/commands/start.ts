@@ -10,22 +10,22 @@ export async function start() {
 
   let ticketId = await text({
     message: 'Enter Ticket ID:',
-    placeholder: "PROJ-123",
+    placeholder: 'PROJ-123',
     validate(value) {
       if (value.length === 0) return `Value is required!`;
     },
-  })
+  });
 
   if (isCancel(ticketId)) {
     cancel('Operation cancelled.');
     process.exit(0);
   }
-  ticketId = sanitizeTicketId(ticketId)
+  ticketId = sanitizeTicketId(ticketId);
 
   const selectedRepos = await multiselect({
-    message: "Which repositories does this involve?",
+    message: 'Which repositories does this involve?',
     options: Object.keys(config.repos).map((repo) => ({ value: repo, label: repo })),
-  })
+  });
 
   if (isCancel(selectedRepos)) {
     cancel('Operation cancelled.');

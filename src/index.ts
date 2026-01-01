@@ -9,7 +9,7 @@ import { cancel, intro, log } from '@clack/prompts';
 const command = argv._[0];
 
 $.quiet = true;
-intro(chalk.hex("#ff8700").bold(' wt - Worktree Session '))
+intro(chalk.hex('#ff8700').bold(' wt - Worktree Session '));
 try {
   switch (command) {
     case 'start':
@@ -33,7 +33,7 @@ try {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } catch (error: any) {
   if (error.name === 'ExitPromptError' || error.message?.includes('User force closed')) {
-    cancel("Operation cancelled.")
+    cancel('Operation cancelled.');
   } else {
     log.error(chalk.red('An unexpected error occurred:'));
     log.error(error);

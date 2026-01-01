@@ -25,14 +25,16 @@ export async function finish() {
   });
 
   if (isCancel(ticketId)) {
-    cancel('Operation cancelled.')
-    process.exit(0)
+    cancel('Operation cancelled.');
+    process.exit(0);
   }
 
   const selectedTicket = tickets.find((ticket) => ticket.id === ticketId);
   if (!selectedTicket) return;
 
-    const userConfirmation = await confirm({message: `Are you sure you want to close ${ticketId}? (This will kill the tmux session and remove worktrees)` });
+  const userConfirmation = await confirm({
+    message: `Are you sure you want to close ${ticketId}? (This will kill the tmux session and remove worktrees)`,
+  });
 
   if (!userConfirmation) process.exit(0);
 
@@ -54,7 +56,9 @@ export async function finish() {
       await Git.removeWorktree(baseRepo, worktreePath);
       log.message(chalk.green(`✔ Removed worktree`));
 
-      const deleteBranchConfirmation = await confirm({message: `Delete local branch '${ticketId}' in ${repoName}?` })
+      const deleteBranchConfirmation = await confirm({
+        message: `Delete local branch '${ticketId}' in ${repoName}?`,
+      });
 
       if (deleteBranchConfirmation) {
         try {
