@@ -2,12 +2,13 @@ import { chalk, fs, os, path, $ } from 'zx';
 import matter from 'gray-matter';
 import { Config, Ticket } from './types.js';
 import { fileURLToPath } from 'node:url';
+import { log } from '@clack/prompts';
 
 export const CONFIG_PATH = path.join(os.homedir(), '.config/wt/config.json');
 
 export async function loadConfig(): Promise<Config> {
   if (!fs.existsSync(CONFIG_PATH)) {
-    console.error(chalk.red(`Error: Config file not found at ${CONFIG_PATH}`));
+    log.error(chalk.red(`Error: Config file not found at ${CONFIG_PATH}`));
     process.exit(1);
   }
   return fs.readJson(CONFIG_PATH);
@@ -89,8 +90,8 @@ export async function checkDependencies() {
   }
 
   if (missing.length > 0) {
-    console.error(chalk.red(`\n❌ Missing required dependencies: ${missing.join(', ')}`));
-    console.error(chalk.yellow(`Please install them before using dev-flow.`));
+    log.error(chalk.red(`Missing required dependencies: ${missing.join(', ')}`));
+    log.warn(chalk.yellow(`Please install them before using wt.`));
     process.exit(1);
   }
 }

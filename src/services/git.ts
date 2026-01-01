@@ -1,3 +1,4 @@
+import { log } from '@clack/prompts';
 import { fs, path, $, chalk } from 'zx';
 
 export async function createWorktree(
@@ -16,7 +17,7 @@ export async function createWorktree(
     await $`git -C ${baseRepoPath} worktree add -b ${ticketId} ${worktreePath}`;
     return worktreePath;
   } catch (e) {
-    console.error(chalk.red(`Failed to create worktree for ${repoName}: ${e}`));
+    log.error(chalk.red(`Failed to create worktree for ${repoName}: ${e}`));
     throw e;
   }
 }
@@ -27,9 +28,9 @@ export async function removeWorktree(baseRepoPath: string, worktreePath: string)
   try {
     await $`git -C ${baseRepoPath} worktree remove ${worktreePath}`;
   } catch {
-    console.log(chalk.yellow(`⚠ standard remove failed. Force removing...`));
+    log.warn(chalk.yellow(`standard remove failed. Force removing...`));
     await $`git -C ${baseRepoPath} worktree remove -f ${worktreePath}`;
-    console.log(chalk.green(`✔ Force removed worktree`));
+    log.step(chalk.green(`Force removed worktree`));
   }
 
   await fs.remove(worktreePath);
@@ -48,7 +49,7 @@ export async function deleteBranch(baseRepoPath: string, branchName: string) {
   try {
     await $`git -C ${baseRepoPath} branch -D ${branchName}`;
   } catch (e) {
-    console.error(chalk.red(`Failed to delete branch: ${branchName}`));
+    log.error(chalk.red(`Failed to delete branch: ${branchName}`));
     throw e;
   }
 }
